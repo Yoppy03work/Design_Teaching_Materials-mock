@@ -123,7 +123,7 @@ export function ColorEditor({
   }
 
   return (
-    <div className="grid gap-6 lg:grid-cols-2">
+    <div className="grid gap-6 lg:grid-cols-[minmax(300px,360px)_1fr]">
       <div className="space-y-6">
         <div className="space-y-2">
           <p className="text-sm font-medium">プリセット（改変して始める）</p>
