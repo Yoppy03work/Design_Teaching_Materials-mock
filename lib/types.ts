@@ -21,12 +21,17 @@ export type Philosophy = "function" | "emotion" | "dialogue";
 export type DesignData = {
   bg: string; // 背景色 (HEX)
   text: string; // 文字色 (HEX)
-  surface: string; // 見出し帯・カードの背景色 (HEX)
+  surface: string; // バー・カードの背景色 (HEX)
   heading: string; // 見出しの文字色 (HEX)
   button: string; // ボタン色 (HEX)
   buttonText: string; // ボタン上の文字色 (HEX)
   accent: string; // アクセント色 (HEX)
+  tag1: string; // タグ（カテゴリ）色1 (HEX)
+  tag2: string; // タグ（カテゴリ）色2 (HEX)
+  tag3: string; // タグ（カテゴリ）色3 (HEX)
+  commentBg: string; // コメント吹き出しの背景色 (HEX)
   fontSize: number; // 本文の基準文字サイズ (px)
+  fontFamily: string; // フォント（lib/design の FONT_FAMILIES キー）
 };
 
 export type Profile = {

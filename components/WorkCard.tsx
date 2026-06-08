@@ -53,12 +53,21 @@ export function WorkCard({
             NEW
           </span>
         </div>
-        <div className="px-3 pb-3">
+        <div className="flex items-center gap-2 px-3 pb-3">
           <span
             className="inline-block rounded px-3 py-1 text-xs font-semibold"
             style={{ backgroundColor: d.button, color: d.buttonText }}
           >
             写真を追加
+          </span>
+          <span className="ml-auto flex gap-1" aria-hidden>
+            {[d.tag1, d.tag2, d.tag3].map((c, i) => (
+              <span
+                key={i}
+                className="size-3 rounded-full"
+                style={{ backgroundColor: c }}
+              />
+            ))}
           </span>
         </div>
       </Link>
