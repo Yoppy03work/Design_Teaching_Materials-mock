@@ -74,10 +74,15 @@ export function designContrastPairs(d: DesignData): ContrastPair[] {
   ];
 }
 
-/** 主要ペアの最小コントラスト比（提出時のスコア用）。算出不能は NaN。 */
+/**
+ * 主要ペアの最小コントラスト比（提出時のスコア用）。
+ * 無効な色（不正なHEX）は黙って除外せず、最低コントラスト比＝1（失格）として扱う。
+ * ColorEditor は任意のテキスト入力を保持するため、壊れた色がスコアを過大評価しないように。
+ */
 export function designMinContrast(d: DesignData): number {
-  const ratios = designContrastPairs(d)
-    .map((p) => contrastRatio(p.fg, p.bg))
-    .filter((r) => !Number.isNaN(r));
-  return ratios.length > 0 ? Math.min(...ratios) : NaN;
+  const ratios = designContrastPairs(d).map((p) => {
+    const r = contrastRatio(p.fg, p.bg);
+    return Number.isNaN(r) ? 1 : r;
+  });
+  return ratios.length > 0 ? Math.min(...ratios) : 1;
 }
