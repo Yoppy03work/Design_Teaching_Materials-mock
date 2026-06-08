@@ -10,6 +10,7 @@ import { AIAssistant } from "@/components/AIAssistant";
 import { WorkGallery } from "@/components/WorkGallery";
 import { ReflectionForm } from "@/components/ReflectionForm";
 import { PrivacyNote } from "@/components/PrivacyNote";
+import { CvdExplainer } from "@/components/CvdExplainer";
 
 // 各ステップの操作画面。lab で作った部品を実フローに差し込む。
 export function StepContent({ step }: { step: StepMeta }) {
@@ -50,6 +51,7 @@ export function StepContent({ step }: { step: StepMeta }) {
           <p className="text-sm">
             色覚シミュレータで祖父の見え方を体験し、気づいたことをメモしましょう。
           </p>
+          <CvdExplainer />
           <ColorBlindSimulator />
           <PrivacyNote />
           <NoteField />
