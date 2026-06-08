@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "色覚シミュレータ（CVD Simulator）",
+  "version": "1.0.0",
+  "description": "今見ているページを色覚多様性（P/D/T型・程度つき, Machado 2009）の見え方でシミュレーションします。",
+  "permissions": ["storage"],
+  "host_permissions": ["<all_urls>"],
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "色覚シミュレータ"
+  },
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["cvd-data.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ]
+}
