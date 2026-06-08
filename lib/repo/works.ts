@@ -2,7 +2,7 @@
 import { createClient } from "@/lib/supabase/client";
 import type { DesignData, Work } from "@/lib/types";
 
-export type WorkFilter = "sample" | "all";
+export type WorkFilter = "sample" | "all" | "public";
 
 export async function listWorks(filter: WorkFilter): Promise<Work[]> {
   const supabase = createClient();
@@ -12,6 +12,8 @@ export async function listWorks(filter: WorkFilter): Promise<Work[]> {
     .order("created_at", { ascending: false });
   // 認証後回しフェーズでは公開制御は素通し。Phase 8 で RLS により実効化される。
   if (filter === "sample") query = query.eq("type", "sample");
+  else if (filter === "public")
+    query = query.eq("type", "student").eq("is_public", true);
   const { data, error } = await query;
   if (error) throw error;
   return (data ?? []) as Work[];

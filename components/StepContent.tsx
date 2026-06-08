@@ -141,11 +141,21 @@ export function StepContent({ step }: { step: StepMeta }) {
       );
     case "step6":
       return (
-        <div className="space-y-3">
-          <p className="text-sm">
-            他の人は祖父のためにどんなデザインを考えたでしょうか。3つの作品を見てみましょう。
-          </p>
-          <WorkGallery filter="sample" />
+        <div className="space-y-8">
+          <section className="space-y-3">
+            <h3 className="font-semibold">サンプル作品</h3>
+            <p className="text-sm">
+              他の人は祖父のためにどんなデザインを考えたでしょうか。3つの作品を見てみましょう。
+            </p>
+            <WorkGallery filter="sample" />
+          </section>
+          <section className="space-y-3">
+            <h3 className="font-semibold">みんなの作品</h3>
+            <p className="text-sm text-muted-foreground">
+              クラスのみんなが提出して「公開」にした作品です。気づいたことをコメントで伝え合いましょう。
+            </p>
+            <WorkGallery filter="public" />
+          </section>
         </div>
       );
     case "step7":
