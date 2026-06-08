@@ -9,14 +9,16 @@ export type WcagRating = "AAA" | "AA" | "AA-Large" | "Fail";
 export function hexToRgb(
   hex: string,
 ): { r: number; g: number; b: number } | null {
-  let h = hex.trim().replace(/^#/, "");
+  const s = hex.trim();
+  // 先頭の # を必須にする（"FFFFFF" のような # 無しは無効として扱い、スコアと表示を一致させる）。
+  if (!/^#([0-9a-fA-F]{3}|[0-9a-fA-F]{6})$/.test(s)) return null;
+  let h = s.slice(1);
   if (h.length === 3) {
     h = h
       .split("")
       .map((c) => c + c)
       .join("");
   }
-  if (!/^[0-9a-fA-F]{6}$/.test(h)) return null;
   const num = parseInt(h, 16);
   return { r: (num >> 16) & 255, g: (num >> 8) & 255, b: num & 255 };
 }

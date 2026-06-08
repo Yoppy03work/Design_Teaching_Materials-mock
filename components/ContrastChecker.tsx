@@ -37,7 +37,9 @@ export function ContrastChecker({ design }: { design: DesignData }) {
       <p className="text-sm font-medium">WCAG コントラスト比</p>
       <ul className="space-y-1.5">
         {pairs.map((pair) => {
-          const ratio = contrastRatio(pair.fg, pair.bg);
+          // 無効な色（不正なHEX）は失格(比=1)に正規化し、表示と提出スコアを一致させる。
+          const raw = contrastRatio(pair.fg, pair.bg);
+          const ratio = Number.isNaN(raw) ? 1 : raw;
           const meta = RATING_META[wcagRating(ratio)];
           return (
             <li
@@ -59,7 +61,7 @@ export function ContrastChecker({ design }: { design: DesignData }) {
               </span>
               <span className="flex items-center gap-2">
                 <span className="font-mono text-xs text-muted-foreground">
-                  {Number.isNaN(ratio) ? "—" : `${ratio.toFixed(2)}:1`}
+                  {`${ratio.toFixed(2)}:1`}
                 </span>
                 <span
                   className={cn(
