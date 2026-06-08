@@ -10,6 +10,7 @@ import {
   type CvdType,
 } from "@/lib/colorblind";
 import { cn } from "@/lib/utils";
+import { Modal } from "@/components/Modal";
 
 // シーン色（赤緑の混同が見えるよう複数の有彩色を含める）
 const SCENE = {
@@ -24,6 +25,7 @@ export function ColorBlindSimulator() {
   const [type, setType] = useState<CvdType>("deutan");
   const [severity, setSeverity] = useState(0.6);
   const [showSim, setShowSim] = useState(true); // true=他者(祖父)の見え方
+  const [enlarged, setEnlarged] = useState(false);
   const filterId = `cvd-${useId().replace(/[^a-zA-Z0-9]/g, "")}`;
   const matrixValues = toFeColorMatrix(machadoMatrix(type, severity));
   const pct = Math.round(severity * 100);
@@ -115,9 +117,18 @@ export function ColorBlindSimulator() {
 
       {/* シーンプレビュー（Machado を SVG フィルタで適用） */}
       <div className="space-y-2">
-        <p className="text-sm font-medium">
-          アルバムサイトの見え方（{showSim ? `${typeLabel}・${pct}%` : "原画"}）
-        </p>
+        <div className="flex items-center justify-between gap-2">
+          <p className="text-sm font-medium">
+            アルバムサイトの見え方（{showSim ? `${typeLabel}・${pct}%` : "原画"}）
+          </p>
+          <button
+            type="button"
+            onClick={() => setEnlarged(true)}
+            className="shrink-0 rounded-md border px-2 py-1 text-xs hover:bg-muted"
+          >
+            ⤢ 大きく見る
+          </button>
+        </div>
         <div style={showSim ? { filter: `url(#${filterId})` } : undefined}>
           <AlbumScene />
         </div>
@@ -157,6 +168,17 @@ export function ColorBlindSimulator() {
           1997 の完全二色覚（T型でも正確）。
         </p>
       </div>
+
+      <Modal
+        open={enlarged}
+        onClose={() => setEnlarged(false)}
+        title={`アルバムサイトの見え方（${showSim ? `${typeLabel}・${pct}%` : "原画"}）`}
+        panelClassName="max-w-4xl"
+      >
+        <div style={showSim ? { filter: `url(#${filterId})` } : undefined}>
+          <AlbumScene />
+        </div>
+      </Modal>
     </div>
   );
 }
