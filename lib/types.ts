@@ -21,9 +21,12 @@ export type Philosophy = "function" | "emotion" | "dialogue";
 export type DesignData = {
   bg: string; // 背景色 (HEX)
   text: string; // 文字色 (HEX)
+  surface: string; // 見出し帯・カードの背景色 (HEX)
+  heading: string; // 見出しの文字色 (HEX)
   button: string; // ボタン色 (HEX)
   buttonText: string; // ボタン上の文字色 (HEX)
   accent: string; // アクセント色 (HEX)
+  fontSize: number; // 本文の基準文字サイズ (px)
 };
 
 export type Profile = {

@@ -5,15 +5,10 @@ import { ColorEditor } from "@/components/ColorEditor";
 import { useWorks } from "@/components/WorksProvider";
 import { Button } from "@/components/ui/button";
 import { designMinContrast } from "@/lib/wcag";
+import { DESIGN_DEFAULTS } from "@/lib/design";
 import type { DesignData } from "@/lib/types";
 
-const DEFAULT: DesignData = {
-  bg: "#FFFFFF",
-  text: "#1A1A1A",
-  button: "#0B5FAE",
-  buttonText: "#FFFFFF",
-  accent: "#B45309",
-};
+const DEFAULT: DesignData = DESIGN_DEFAULTS;
 
 export function WorkSubmitForm() {
   const { submit, persisted } = useWorks();
