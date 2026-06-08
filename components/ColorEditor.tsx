@@ -4,7 +4,6 @@ import { useState } from "react";
 import type { DesignData } from "@/lib/types";
 import { ContrastChecker } from "@/components/ContrastChecker";
 import { Button } from "@/components/ui/button";
-import { Modal } from "@/components/Modal";
 import { ALBUM_PHOTOS } from "@/lib/albumPhotos";
 import { AlbumPhoto } from "@/components/AlbumPhoto";
 
@@ -68,7 +67,6 @@ export function ColorEditor({
   onChange?: (design: DesignData) => void;
 }) {
   const [design, setDesign] = useState<DesignData>(initial ?? PRESETS[0].data);
-  const [enlarged, setEnlarged] = useState(false);
 
   function update(next: DesignData) {
     setDesign(next);
@@ -127,41 +125,16 @@ export function ColorEditor({
         <ContrastChecker design={design} />
       </div>
 
-      <AlbumPreview design={design} onEnlarge={() => setEnlarged(true)} />
-
-      <Modal
-        open={enlarged}
-        onClose={() => setEnlarged(false)}
-        panelClassName="max-w-4xl"
-      >
-        <AlbumPreview design={design} />
-      </Modal>
+      <AlbumPreview design={design} />
     </div>
   );
 }
 
 // 配色を反映したアルバムサイトのモックプレビュー。
-function AlbumPreview({
-  design,
-  onEnlarge,
-}: {
-  design: DesignData;
-  onEnlarge?: () => void;
-}) {
+function AlbumPreview({ design }: { design: DesignData }) {
   return (
     <div className="space-y-2">
-      <div className="flex items-center justify-between gap-2">
-        <p className="text-sm font-medium">プレビュー（祖父のアルバムサイト）</p>
-        {onEnlarge && (
-          <button
-            type="button"
-            onClick={onEnlarge}
-            className="shrink-0 rounded-md border px-2 py-1 text-xs hover:bg-muted"
-          >
-            ⤢ 大きく見る
-          </button>
-        )}
-      </div>
+      <p className="text-sm font-medium">プレビュー（祖父のアルバムサイト）</p>
       <div
         className="overflow-hidden rounded-xl border shadow-sm"
         style={{ backgroundColor: design.bg, color: design.text }}
@@ -170,7 +143,14 @@ function AlbumPreview({
           className="flex items-center justify-between px-4 py-3"
           style={{ borderBottom: `1px solid ${design.text}22` }}
         >
-          <span className="text-lg font-bold">家族のアルバム</span>
+          <a
+            href="/album"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="text-lg font-bold underline-offset-4 hover:underline"
+          >
+            家族のアルバム ↗
+          </a>
           <span
             className="rounded-full px-2 py-0.5 text-xs font-semibold"
             style={{ backgroundColor: design.accent, color: design.bg }}
