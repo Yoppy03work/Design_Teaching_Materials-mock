@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { STEPS, type StepMeta } from "@/lib/steps";
 import { useProgress } from "@/components/ProgressProvider";
+import { StepContent } from "@/components/StepContent";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
@@ -34,9 +35,7 @@ export function StepView({ step }: { step: StepMeta }) {
         <p className="text-muted-foreground">{step.summary}</p>
       </div>
 
-      <div className="rounded-lg border border-dashed p-10 text-center text-sm text-muted-foreground">
-        このステップの操作画面は今後のフェーズで実装します（プレースホルダ）。
-      </div>
+      <StepContent step={step} />
 
       <div className="flex items-center justify-between gap-3">
         <Link
