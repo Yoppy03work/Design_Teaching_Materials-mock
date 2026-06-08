@@ -9,6 +9,7 @@ import { WorkSubmitForm } from "@/components/WorkSubmitForm";
 import { AIAssistant } from "@/components/AIAssistant";
 import { WorkGallery } from "@/components/WorkGallery";
 import { ReflectionForm } from "@/components/ReflectionForm";
+import { PrivacyNote } from "@/components/PrivacyNote";
 
 // 各ステップの操作画面。lab で作った部品を実フローに差し込む。
 export function StepContent({ step }: { step: StepMeta }) {
@@ -50,6 +51,7 @@ export function StepContent({ step }: { step: StepMeta }) {
             色覚シミュレータで祖父の見え方を体験し、気づいたことをメモしましょう。
           </p>
           <ColorBlindSimulator />
+          <PrivacyNote />
           <NoteField />
         </div>
       );
@@ -68,6 +70,7 @@ export function StepContent({ step }: { step: StepMeta }) {
     case "step5":
       return (
         <div className="space-y-8">
+          <PrivacyNote />
           <section className="space-y-3">
             <h3 className="font-semibold">配色を設計して提出</h3>
             <WorkSubmitForm />
