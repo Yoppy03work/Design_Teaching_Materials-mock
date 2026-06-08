@@ -55,7 +55,7 @@ export function contrastRatio(hexA: string, hexB: string): number {
 
 /**
  * コントラスト比から到達等級を返す。
- * AAA: 7:1以上 / AA: 4.5:1以上 / 大字AA(AA-Large): 3:1以上（大きい文字のみAA）/ それ未満は失格。
+ * AAA: 7:1以上 / AA: 4.5:1以上 / 大字AA(AA-Large): 3:1以上（大きい文字のみAA）/ それ未満は要改善。
  */
 export function wcagRating(ratio: number): WcagRating {
   if (Number.isNaN(ratio)) return "Fail";
@@ -80,7 +80,7 @@ export function designContrastPairs(d: DesignData): ContrastPair[] {
 
 /**
  * 主要ペアの最小コントラスト比（提出時のスコア用）。
- * 無効な色（不正なHEX）は黙って除外せず、最低コントラスト比＝1（失格）として扱う。
+ * 無効な色（不正なHEX）は黙って除外せず、最低コントラスト比＝1（要改善）として扱う。
  * ColorEditor は任意のテキスト入力を保持するため、壊れた色がスコアを過大評価しないように。
  */
 export function designMinContrast(d: DesignData): number {

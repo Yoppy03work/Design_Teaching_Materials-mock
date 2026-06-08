@@ -29,7 +29,7 @@ const RATING_LABEL = {
   AAA: "AAA",
   AA: "AA",
   "AA-Large": "大字AA",
-  Fail: "失格",
+  Fail: "要改善",
 } as const;
 
 // 作品（その人が作った配色）でアルバムサイトを全幅表示するページ。

@@ -24,8 +24,9 @@ const RATING_META: Record<WcagRating, { label: string; className: string }> = {
       "bg-amber-100 text-amber-800 dark:bg-amber-900/40 dark:text-amber-300",
   },
   Fail: {
-    label: "失格",
-    className: "bg-red-100 text-red-800 dark:bg-red-900/40 dark:text-red-300",
+    label: "要改善",
+    className:
+      "bg-muted text-muted-foreground dark:bg-muted dark:text-muted-foreground",
   },
 };
 
@@ -37,7 +38,7 @@ export function ContrastChecker({ design }: { design: DesignData }) {
       <p className="text-sm font-medium">WCAG コントラスト比</p>
       <ul className="space-y-1.5">
         {pairs.map((pair) => {
-          // 無効な色（不正なHEX）は失格(比=1)に正規化し、表示と提出スコアを一致させる。
+          // 無効な色（不正なHEX）は比=1（要改善）に正規化し、表示と提出スコアを一致させる。
           const raw = contrastRatio(pair.fg, pair.bg);
           const ratio = Number.isNaN(raw) ? 1 : raw;
           const meta = RATING_META[wcagRating(ratio)];
