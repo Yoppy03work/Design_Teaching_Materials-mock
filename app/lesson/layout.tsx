@@ -2,6 +2,7 @@ import type { ReactNode } from "react";
 import Link from "next/link";
 import { ProgressProvider } from "@/components/ProgressProvider";
 import { ProgressBar } from "@/components/ProgressBar";
+import { PersistenceNotice } from "@/components/PersistenceNotice";
 
 // レッスン共通レイアウト：進捗の状態を供給し、ヘッダーに進捗バー＋ステップナビを表示する。
 export default function LessonLayout({ children }: { children: ReactNode }) {
@@ -24,7 +25,10 @@ export default function LessonLayout({ children }: { children: ReactNode }) {
             <ProgressBar />
           </div>
         </header>
-        <main className="mx-auto max-w-3xl px-4 py-8">{children}</main>
+        <main className="mx-auto max-w-3xl px-4 py-8">
+          <PersistenceNotice />
+          {children}
+        </main>
       </div>
     </ProgressProvider>
   );

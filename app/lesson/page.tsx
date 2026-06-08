@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 
 // 学習フローの一覧と「続きから」。各ステップへ遷移できる。
 export default function LessonOverviewPage() {
-  const { isCompleted, completed, persisted, loading } = useProgress();
+  const { isCompleted, completed, loading } = useProgress();
   const firstIncomplete =
     STEPS.find((s) => !isCompleted(s.id)) ?? STEPS[STEPS.length - 1];
   const started = completed.size > 0;
@@ -70,13 +70,6 @@ export default function LessonOverviewPage() {
         })}
       </ol>
 
-      {!loading && !persisted && (
-        <p className="rounded-md bg-muted px-4 py-3 text-sm text-muted-foreground">
-          進捗の永続化が無効です（Supabase 未接続、または接続に失敗）。このセッション内のみ保持され、リロードで消えます。永続化するには
-          <code className="mx-1">.env.local</code>
-          に Supabase の接続情報を設定してください。
-        </p>
-      )}
     </div>
   );
 }

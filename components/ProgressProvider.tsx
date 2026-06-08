@@ -15,6 +15,7 @@ import {
   getProgress,
 } from "@/lib/repo/progress";
 import type { StepId } from "@/lib/types";
+import { STEP_IDS } from "@/lib/steps";
 
 type ProgressContextValue = {
   /** 完了済みステップ */
@@ -46,9 +47,14 @@ export function ProgressProvider({ children }: { children: ReactNode }) {
         const rows = await getProgress(user.id);
         if (!active) return;
         // 「置換」ではなく「マージ」する：ロード中に行われた楽観更新を消さないため。
+        // 既知のステップIDのみ採用する（progress.step_id は text 型なので、旧データや
+        // タイプミスが混ざっても完了数・進捗を汚さないようにする）。
+        const known = new Set<string>(STEP_IDS);
         setCompleted((prev) => {
           const merged = new Set(prev);
-          for (const r of rows) merged.add(r.step_id as StepId);
+          for (const r of rows) {
+            if (known.has(r.step_id)) merged.add(r.step_id as StepId);
+          }
           return merged;
         });
       } catch {
