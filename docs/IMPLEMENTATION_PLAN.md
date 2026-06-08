@@ -80,8 +80,9 @@ lib/
 ├── wcag.ts  colorblind.ts  types.ts
 supabase/migrations/
 ├── 0001_initial.sql            # テーブル（RLS無効、auth.users FKなし）
-├── 0002_seed.sql               # デモprofile + サンプル作品3件
-└── 0003_rls.sql                # 【Phase 8で適用】RLS有効化＋ポリシー
+└── 0002_seed.sql               # デモprofile + サンプル作品3件
+supabase/
+└── phase8_rls.sql              # 【Phase 8で適用】RLS有効化＋ポリシー（migrations外）
 ```
 
 ---
@@ -144,7 +145,7 @@ supabase/migrations/
 ### Phase 8 — 【後回し】認証・認可・教師画面（後付け）
 - Supabase Auth（Google OAuth）、`/login`、`lib/supabase/middleware.ts` で未ログインを `/login` リダイレクト。
 - `profiles` を `auth.users` と連携、`role`（student/teacher）。`useCurrentUser()` を**実セッションに差し替え**。
-- `0003_rls.sql` を適用：works / reflections / notes / ai_logs / comments / feedbacks のRLSを有効化
+- `supabase/phase8_rls.sql` を適用：works / reflections / notes / ai_logs / comments / feedbacks のRLSを有効化
   （仕様書 §4 のポリシー要点どおり）。`is_public` と提出済み条件、サンプル全員可、教師ロール全件可。
 - 教師画面 `/teacher`（StudentList）・`/teacher/[studentId]`（SubmissionDetail）・`feedbacks`・Recharts でWCAG分布。
 - `repo/*` は基本無改修（RLSが効くだけ）。変更点は実質「`useCurrentUser` の中身」と「ポリシーSQL適用」。
@@ -174,7 +175,8 @@ supabase/migrations/
 
 - `0001_initial.sql`：仕様書 §4 のテーブルを作成。ただし **RLS無効**、**`user_id` は `profiles(id)` 参照**（`auth.users` FK無し）。
 - `0002_seed.sql`：デモ profile 1行（`DEMO_USER_ID`）＋ サンプル作品3件（type='sample', philosophy=function/emotion/dialogue）。
-- `0003_rls.sql`（Phase 8 適用）：`profiles` を `auth.users` 連携化、各表 RLS 有効化、仕様書 §4 のポリシー実装。
+- `supabase/phase8_rls.sql`（Phase 8 適用・migrations外）：`profiles` を `auth.users` 連携化、各表 RLS 有効化、仕様書 §4 のポリシー実装。
+  role列の自己昇格防止（列権限の剥奪）、works昇格防止（type='student'固定）、再帰回避のため `has_submitted_work()` を使用。
 
 ---
 

@@ -21,7 +21,7 @@
 2. **`lib/repo/*`** — データ操作は全てここ経由で、`userId` を引数で受け取る。
    アプリ側に `auth.uid()` を埋め込まないので、Phase 8 で RLS を有効化しても無改修。
 
-補助として、RLS ポリシーは `supabase/migrations/0003_rls.sql` に**設計だけ前倒しで記述**し、
+補助として、RLS ポリシーは `supabase/phase8_rls.sql` に**設計だけ前倒しで記述**し、
 有効化は Phase 8 に回している。`user_id` 系は当面 `auth.users` ではなく `profiles(id)` を参照する
 （認証ユーザーが居なくても insert できるようにするため）。
 
@@ -40,7 +40,8 @@ npm run dev                  # http://localhost:3000 → /lesson へリダイレ
 1. Supabase プロジェクトを作成し、`.env.local` に URL / anon key を設定。
 2. `supabase/migrations/0001_initial.sql` → `0002_seed.sql` の順に SQL を適用
    （Supabase SQL Editor へ貼り付け、または `supabase db push`）。
-3. `0003_rls.sql` は **Phase 8 まで適用しない**。
+3. RLS（認可）は `supabase/phase8_rls.sql` に分離してある（`migrations/` の外なので
+   `supabase db push` では流れない）。**Phase 8 まで適用しない**。
 
 > 環境変数が未設定でもトップページとレッスン概要は表示される。
 > データの読み書きを行う画面（Phase 1 以降）には Supabase 接続が必要。

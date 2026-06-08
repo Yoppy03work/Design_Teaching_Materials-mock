@@ -5,7 +5,7 @@
 --   * 認証(Supabase Auth)は Phase 8 まで導入しない。
 --   * そのため user_id 系は auth.users ではなく profiles(id) を参照する
 --     （認証ユーザーが居なくても insert できるようにするため）。
---   * RLS はこの段階では有効化しない（0003_rls.sql で Phase 8 に有効化）。
+--   * RLS はこの段階では有効化しない（supabase/phase8_rls.sql で Phase 8 に有効化）。
 --   * profiles は Phase 8 で auth.users と連携させる（最小差分で移行可能）。
 
 create extension if not exists "pgcrypto";
