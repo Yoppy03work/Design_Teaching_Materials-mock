@@ -21,12 +21,24 @@ export default function LessonOverviewPage() {
           祖父（68歳・色覚多様性・老眼）のためのアルバムサイトの配色を、動画 →
           演習 → ライブラリ → 振り返り の順に非同期で進めます。
         </p>
-        <Link
-          href={`/lesson/step/${firstIncomplete.id}`}
-          className={cn(buttonVariants({ size: "lg" }))}
-        >
-          {started ? `続きから（STEP ${firstIncomplete.order}）` : "はじめる"}
-        </Link>
+        {loading ? (
+          <span
+            className={cn(
+              buttonVariants({ size: "lg" }),
+              "pointer-events-none opacity-60",
+            )}
+            aria-disabled="true"
+          >
+            読み込み中…
+          </span>
+        ) : (
+          <Link
+            href={`/lesson/step/${firstIncomplete.id}`}
+            className={cn(buttonVariants({ size: "lg" }))}
+          >
+            {started ? `続きから（STEP ${firstIncomplete.order}）` : "はじめる"}
+          </Link>
+        )}
       </section>
 
       <ol className="space-y-3">
@@ -60,7 +72,7 @@ export default function LessonOverviewPage() {
 
       {!loading && !persisted && (
         <p className="rounded-md bg-muted px-4 py-3 text-sm text-muted-foreground">
-          現在 Supabase 未接続のため、進捗はこのセッション内のみ保持されます（リロードで消えます）。永続化するには
+          進捗の永続化が無効です（Supabase 未接続、または接続に失敗）。このセッション内のみ保持され、リロードで消えます。永続化するには
           <code className="mx-1">.env.local</code>
           に Supabase の接続情報を設定してください。
         </p>
