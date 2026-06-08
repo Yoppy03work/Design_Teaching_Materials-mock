@@ -48,7 +48,7 @@ export function ColorBlindSimulator() {
           アルバムサイトの見え方（{showSim ? `${typeLabel}・${pct}%` : "原画"}）
         </p>
         <div style={showSim ? { filter: `url(#${filterId})` } : undefined}>
-          <AlbumScene titleHref="/album" />
+          <AlbumScene titleHref="/album?from=step3" />
         </div>
         <p className="text-xs text-muted-foreground">
           「家族のアルバム」を押すと、別ページ（全幅）で大きく開けます。

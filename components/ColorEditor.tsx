@@ -232,7 +232,7 @@ function AlbumPreview({ design }: { design: DesignData }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium">プレビュー（祖父のフォト）</p>
-      <DesignedAlbum design={design} titleHref="/album" />
+      <DesignedAlbum design={design} titleHref="/album?from=step5" />
     </div>
   );
 }
