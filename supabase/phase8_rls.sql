@@ -31,6 +31,22 @@ language sql stable security definer set search_path = public as $$
   );
 $$;
 
+-- 作品の可視性判定ヘルパ。works の SELECT ルールと同じ条件を集約する
+-- （comments など他テーブルのポリシーから参照して、非公開作品のコメント漏洩を防ぐ）。
+create or replace function can_view_work(w_id uuid) returns boolean
+language sql stable security definer set search_path = public as $$
+  select exists (
+    select 1 from works w
+    where w.id = w_id
+      and (
+        w.type = 'sample'
+        or w.user_id = auth.uid()
+        or (w.is_public = true and has_submitted_work())
+        or is_teacher()
+      )
+  );
+$$;
+
 alter table profiles enable row level security;
 alter table progress enable row level security;
 alter table video_logs enable row level security;
@@ -49,10 +65,15 @@ create policy "profiles_self_insert" on profiles
 create policy "profiles_self_update" on profiles
   for update using (id = auth.uid()) with check (id = auth.uid());
 
--- role の自己昇格を防ぐ: role 列の INSERT/UPDATE 権限を一般ロールから剥奪し、
--- role の変更はサービスロール（管理）経由に限定する。
--- （列を指定しない通常の insert/update は既定値 'student' のまま通る）
-revoke insert (role), update (role) on profiles from anon, authenticated;
+-- role の自己昇格を防ぐ。
+-- 【注意】列単位の revoke はテーブル単位の権限があると無効になる（PostgreSQLでは表／列の
+-- いずれかに権限があれば書けるため）。そこで profiles への書き込みをテーブル単位で剥奪し、
+-- 安全な列だけを列単位で grant し直す。role はクライアントから設定/変更不可（既定 'student'）。
+-- role の変更はサービスロール（管理）経由のみ。Phase 8 の profiles 自動作成は
+-- SECURITY DEFINER トリガ／サービスロールで行うため、この剥奪の影響を受けない。
+revoke insert, update on profiles from anon, authenticated;
+grant insert (id, display_name) on profiles to authenticated;
+grant update (display_name) on profiles to authenticated;
 
 -- 本人スコープ＋教師閲覧の共通パターン: progress / video_logs / notes / reflections / ai_logs
 create policy "progress_owner_all" on progress
@@ -96,11 +117,13 @@ create policy "works_public_peer_select" on works
 create policy "works_teacher_select" on works
   for select using (is_teacher());
 
--- comments: ログイン済みは閲覧可、自分のコメントのみ作成
-create policy "comments_authenticated_select" on comments
-  for select using (auth.uid() is not null);
-create policy "comments_owner_insert" on comments
-  for insert with check (user_id = auth.uid());
+-- comments: 「閲覧可能な作品」に紐づくコメントのみ閲覧/作成できる。
+--   ログイン済みというだけで全コメントを読めると、非公開・ゲート対象の作品の
+--   コメント内容や user_id が漏れてしまうため、作品の可視性で絞る。
+create policy "comments_select_visible_work" on comments
+  for select using (can_view_work(work_id));
+create policy "comments_insert_visible_work" on comments
+  for insert with check (user_id = auth.uid() and can_view_work(work_id));
 
 -- feedbacks: 教師は自分の書込みを作成/閲覧、生徒は自分宛てを閲覧
 create policy "feedbacks_teacher_write" on feedbacks
