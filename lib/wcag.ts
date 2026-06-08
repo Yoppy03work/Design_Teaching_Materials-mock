@@ -74,6 +74,7 @@ export function designContrastPairs(d: DesignData): ContrastPair[] {
     { label: "見出し帯（帯 × 見出し）", fg: d.heading, bg: d.surface },
     { label: "ボタン（ボタン色 × ボタン文字）", fg: d.buttonText, bg: d.button },
     { label: "アクセント（背景 × アクセント）", fg: d.accent, bg: d.bg },
+    { label: "コメント（吹き出し × 文字）", fg: d.text, bg: d.commentBg },
   ];
 }
 
