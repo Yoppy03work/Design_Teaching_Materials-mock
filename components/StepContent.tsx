@@ -1,7 +1,9 @@
 "use client";
 
 import type { StepMeta } from "@/lib/steps";
+import Image from "next/image";
 import { VIDEOS } from "@/lib/videos";
+import { GRANDFATHER_PHOTO } from "@/lib/albumPhotos";
 import { VideoPlayer } from "@/components/VideoPlayer";
 import { ColorBlindSimulator } from "@/components/ColorBlindSimulator";
 import { NoteField } from "@/components/NoteField";
@@ -26,11 +28,21 @@ export function StepContent({ step }: { step: StepMeta }) {
             <p className="font-medium">基発問</p>
             <p>「見やすい配色」とは、誰にとっての見やすさでしょう？</p>
           </div>
-          <p className="text-sm text-muted-foreground">祖父を紹介する動画です。</p>
-          <VideoPlayer
-            videoId={VIDEOS.video3.id}
-            youtubeId={VIDEOS.video3.youtubeId}
-          />
+          <div className="flex items-center gap-4 rounded-lg border p-4">
+            <Image
+              src={GRANDFATHER_PHOTO}
+              alt="祖父"
+              width={80}
+              height={80}
+              className="size-20 shrink-0 rounded-full object-cover"
+            />
+            <div className="space-y-1 text-sm">
+              <p className="font-medium">今回のペルソナ：祖父（68歳）</p>
+              <p className="text-muted-foreground">
+                写真が好きで、家族のアルバムを見るのが楽しみ。赤緑が見分けにくい色弱と、老眼があります。
+              </p>
+            </div>
+          </div>
         </div>
       );
     case "step2":
