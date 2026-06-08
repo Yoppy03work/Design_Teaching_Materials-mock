@@ -40,7 +40,12 @@ export const STEPS: StepMeta[] = [
     title: "作品ライブラリ",
     summary: "サンプル3作品を閲覧しコメント",
   },
-  { id: "step7", order: 7, title: "振り返り", summary: "3つの問いに書き出す" },
+  {
+    id: "step7",
+    order: 7,
+    title: "振り返り",
+    summary: "まとめ動画＋振り返り3問",
+  },
 ];
 
 export const STEP_IDS: StepId[] = STEPS.map((s) => s.id);
