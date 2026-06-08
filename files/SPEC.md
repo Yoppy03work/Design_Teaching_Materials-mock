@@ -64,8 +64,8 @@
 **STEP5 演習②（配色設計・本時の中心）**
 1. 課題テキスト
 2. プライバシー注意（PrivacyNote）
-3. 配色設計＋提出（WorkSubmitForm）＝ ColorEditor ＋ プレビュー（DesignedAlbum）＋ ContrastChecker ＋ 設計意図メモ ＋ 提出
-4. AI壁打ち（AIAssistant、`/api/ai` 経由）
+3. 「配色エディタを開く」ボタン → 全幅の編集ページ `/design` へ遷移して設計・提出
+   - `/design`：ColorEditor（左コントロール＋大きいプレビュー DesignedAlbum）＋ ContrastChecker ＋ 設計意図メモ ＋ 提出（WorkSubmitForm）＋ AI壁打ち（AIAssistant）
 
 **STEP6 作品ライブラリ**
 1. 導入テキスト
@@ -82,6 +82,7 @@
 
 ### 補助ページ（仕様書からの追加実装）
 - `/album`：祖父のアルバムサイトを全幅で開く独立ページ（色覚コントロール付き、デモ配色）。STEP3/STEP5 の「家族のアルバム」見出しからリンク。
+- `/design`：配色エディタを全幅で開く独立ページ（左コントロール＋大きいプレビュー、AI壁打ち＋提出）。STEP5 のボタンから遷移。
 - `/works/[id]`：作品（その配色）でアルバムを全幅表示。色覚トグル＋コントラスト表示。
 - `/lab/*`：各部品の開発プレビュー。
 - Chrome 拡張（`extension/`）：任意ページに色覚シミュレーションを適用。
