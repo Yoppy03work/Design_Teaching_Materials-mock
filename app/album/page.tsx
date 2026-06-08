@@ -1,7 +1,7 @@
 "use client";
 
 import Link from "next/link";
-import { useId, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import {
   CVD_TYPES,
   machadoMatrix,
@@ -22,6 +22,13 @@ export default function AlbumPage() {
   const pct = Math.round(severity * 100);
   const typeLabel = CVD_TYPES.find((t) => t.key === type)?.label ?? "";
 
+  // 戻り先：?from=stepN があればそのステップへ、無ければレッスン一覧へ。
+  const [backHref, setBackHref] = useState("/lesson");
+  useEffect(() => {
+    const from = new URLSearchParams(window.location.search).get("from");
+    if (from && /^step[1-7]$/.test(from)) setBackHref(`/lesson/step/${from}`);
+  }, []);
+
   return (
     <main className="mx-auto max-w-4xl space-y-6 p-6">
       {/* SVGフィルタ定義（線形RGBで適用） */}
@@ -34,7 +41,7 @@ export default function AlbumPage() {
       <header className="space-y-1">
         <p className="text-sm">
           <Link
-            href="/lesson/step/step3"
+            href={backHref}
             className="text-muted-foreground underline underline-offset-4 hover:no-underline"
           >
             ← レッスンに戻る
