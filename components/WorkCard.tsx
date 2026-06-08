@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
 import type { Comment, Philosophy, Work } from "@/lib/types";
 import { wcagRating } from "@/lib/wcag";
 import { normalizeDesign } from "@/lib/design";
@@ -34,8 +35,10 @@ export function WorkCard({
 
   return (
     <div className="space-y-3 rounded-lg border p-4">
-      <div
-        className="overflow-hidden rounded-md border"
+      <Link
+        href={`/works/${work.id}`}
+        aria-label="この作品の配色でつくったページを開く"
+        className="block overflow-hidden rounded-md border transition hover:shadow-md focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2"
         style={{ backgroundColor: d.bg, color: d.text }}
       >
         <div
@@ -58,7 +61,10 @@ export function WorkCard({
             写真を追加
           </span>
         </div>
-      </div>
+      </Link>
+      <p className="text-xs text-muted-foreground">
+        クリックでこの配色のページを開く →
+      </p>
 
       <div className="flex flex-wrap items-center gap-2 text-xs">
         {work.type === "sample" && work.philosophy && (
