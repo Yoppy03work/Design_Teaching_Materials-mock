@@ -15,9 +15,12 @@ const seeds: Array<{
     design: {
       bg: "#FFFFFF",
       text: "#1A1A1A",
+      surface: "#EAF2FB",
+      heading: "#1A1A1A",
       button: "#0B5FAE",
       buttonText: "#FFFFFF",
       accent: "#D87A00",
+      fontSize: 18,
     },
     intent:
       "機能優先：最大限のコントラストと明快な色分けで「まず読めること」を最優先した。",
@@ -28,9 +31,12 @@ const seeds: Array<{
     design: {
       bg: "#FBF7EF",
       text: "#3A2E1F",
+      surface: "#F0E6D2",
+      heading: "#3A2E1F",
       button: "#8C5A2B",
       buttonText: "#FFFFFF",
       accent: "#C24914",
+      fontSize: 20,
     },
     intent:
       "感情優先：セピア調の温かみで家族写真の思い出を引き立てた。文字コントラストはAAを確保。",
@@ -41,9 +47,12 @@ const seeds: Array<{
     design: {
       bg: "#F2F5F7",
       text: "#16242E",
+      surface: "#DCE6EC",
+      heading: "#16242E",
       button: "#1C6E8C",
       buttonText: "#FFFFFF",
       accent: "#E0A100",
+      fontSize: 18,
     },
     intent:
       "対話優先：祖父に何度か見せ、青系の落ち着きと暖色アクセントの組み合わせに調整した。",

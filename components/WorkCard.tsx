@@ -3,6 +3,7 @@
 import { useState } from "react";
 import type { Comment, Philosophy, Work } from "@/lib/types";
 import { wcagRating } from "@/lib/wcag";
+import { normalizeDesign } from "@/lib/design";
 import { Button } from "@/components/ui/button";
 
 const PHILOSOPHY_LABEL: Record<Philosophy, string> = {
@@ -28,7 +29,7 @@ export function WorkCard({
   onAddComment: (content: string) => void;
 }) {
   const [comment, setComment] = useState("");
-  const d = work.design_data;
+  const d = normalizeDesign(work.design_data);
   const rating = work.wcag_score != null ? wcagRating(work.wcag_score) : "Fail";
 
   return (
@@ -37,8 +38,11 @@ export function WorkCard({
         className="overflow-hidden rounded-md border"
         style={{ backgroundColor: d.bg, color: d.text }}
       >
-        <div className="flex items-center justify-between px-3 py-2 text-sm font-semibold">
-          <span>家族のアルバム</span>
+        <div
+          className="flex items-center justify-between px-3 py-2 text-sm font-semibold"
+          style={{ backgroundColor: d.surface }}
+        >
+          <span style={{ color: d.heading }}>家族のアルバム</span>
           <span
             className="rounded-full px-2 py-0.5 text-xs font-semibold"
             style={{ backgroundColor: d.accent, color: d.bg }}
@@ -70,6 +74,7 @@ export function WorkCard({
             最小コントラスト {work.wcag_score.toFixed(2)}:1（{RATING_LABEL[rating]}）
           </span>
         )}
+        <span className="text-muted-foreground">文字 {d.fontSize}px</span>
       </div>
 
       {work.intent_memo && <p className="text-sm">{work.intent_memo}</p>}

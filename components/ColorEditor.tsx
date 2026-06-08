@@ -6,27 +6,22 @@ import { ContrastChecker } from "@/components/ContrastChecker";
 import { Button } from "@/components/ui/button";
 import { ALBUM_PHOTOS } from "@/lib/albumPhotos";
 import { AlbumPhoto } from "@/components/AlbumPhoto";
+import { DESIGN_DEFAULTS, FONT_SIZE_MAX, FONT_SIZE_MIN } from "@/lib/design";
 
 // プリセット（白紙からでなく改変から始められるように）。
 const PRESETS: { name: string; data: DesignData }[] = [
-  {
-    name: "高コントラスト",
-    data: {
-      bg: "#FFFFFF",
-      text: "#1A1A1A",
-      button: "#0B5FAE",
-      buttonText: "#FFFFFF",
-      accent: "#B45309",
-    },
-  },
+  { name: "高コントラスト", data: DESIGN_DEFAULTS },
   {
     name: "機能優先",
     data: {
       bg: "#FFFFFF",
       text: "#1A1A1A",
+      surface: "#EAF2FB",
+      heading: "#0B5FAE",
       button: "#0B5FAE",
       buttonText: "#FFFFFF",
       accent: "#D87A00",
+      fontSize: 18,
     },
   },
   {
@@ -34,9 +29,12 @@ const PRESETS: { name: string; data: DesignData }[] = [
     data: {
       bg: "#FBF7EF",
       text: "#3A2E1F",
+      surface: "#F0E6D2",
+      heading: "#5A3A1A",
       button: "#8C5A2B",
       buttonText: "#FFFFFF",
       accent: "#C24914",
+      fontSize: 20,
     },
   },
   {
@@ -44,16 +42,23 @@ const PRESETS: { name: string; data: DesignData }[] = [
     data: {
       bg: "#F2F5F7",
       text: "#16242E",
+      surface: "#DCE6EC",
+      heading: "#16242E",
       button: "#1C6E8C",
       buttonText: "#FFFFFF",
       accent: "#E0A100",
+      fontSize: 18,
     },
   },
 ];
 
-const FIELDS: { key: keyof DesignData; label: string }[] = [
+// 色フィールド（文字サイズは別UIで扱う）。
+type ColorKey = Exclude<keyof DesignData, "fontSize">;
+const FIELDS: { key: ColorKey; label: string }[] = [
   { key: "bg", label: "背景色" },
   { key: "text", label: "文字色" },
+  { key: "heading", label: "見出し色" },
+  { key: "surface", label: "見出し帯" },
   { key: "button", label: "ボタン色" },
   { key: "buttonText", label: "ボタン文字色" },
   { key: "accent", label: "アクセント色" },
@@ -73,7 +78,7 @@ export function ColorEditor({
     onChange?.(next);
   }
 
-  function setColor(key: keyof DesignData, value: string) {
+  function setField<K extends keyof DesignData>(key: K, value: DesignData[K]) {
     update({ ...design, [key]: value });
   }
 
@@ -106,20 +111,45 @@ export function ColorEditor({
                 id={`color-${f.key}`}
                 type="color"
                 value={design[f.key]}
-                onChange={(e) => setColor(f.key, e.target.value)}
+                onChange={(e) => setField(f.key, e.target.value)}
                 className="h-9 w-12 cursor-pointer rounded border bg-background"
                 aria-label={`${f.label}（カラーピッカー）`}
               />
               <input
                 type="text"
                 value={design[f.key]}
-                onChange={(e) => setColor(f.key, e.target.value)}
+                onChange={(e) => setField(f.key, e.target.value)}
                 spellCheck={false}
                 className="w-28 rounded-md border bg-background px-2 py-1 font-mono text-sm uppercase"
                 aria-label={`${f.label}（HEX）`}
               />
             </div>
           ))}
+        </div>
+
+        {/* 文字サイズ（老眼の祖父向けに大きさを調整） */}
+        <div className="space-y-2">
+          <label htmlFor="font-size" className="text-sm font-medium">
+            文字サイズ：{design.fontSize}px
+          </label>
+          <div className="flex items-center gap-3">
+            <span className="text-xs text-muted-foreground">小</span>
+            <input
+              id="font-size"
+              type="range"
+              min={FONT_SIZE_MIN}
+              max={FONT_SIZE_MAX}
+              step={1}
+              value={design.fontSize}
+              onChange={(e) => setField("fontSize", parseInt(e.target.value, 10))}
+              className="flex-1"
+              aria-label="文字サイズ（px）"
+            />
+            <span className="text-lg text-muted-foreground">大</span>
+          </div>
+          <p className="text-xs text-muted-foreground">
+            老眼の祖父には大きめが見やすい（目安：18px以上）。
+          </p>
         </div>
 
         <ContrastChecker design={design} />
@@ -130,36 +160,44 @@ export function ColorEditor({
   );
 }
 
-// 配色を反映したアルバムサイトのモックプレビュー。
+// 配色・文字サイズを反映したアルバムサイトのモックプレビュー。
 function AlbumPreview({ design }: { design: DesignData }) {
   return (
     <div className="space-y-2">
       <p className="text-sm font-medium">プレビュー（祖父のアルバムサイト）</p>
       <div
         className="overflow-hidden rounded-xl border shadow-sm"
-        style={{ backgroundColor: design.bg, color: design.text }}
+        style={{
+          backgroundColor: design.bg,
+          color: design.text,
+          fontSize: `${design.fontSize}px`,
+        }}
       >
         <div
           className="flex items-center justify-between px-4 py-3"
-          style={{ borderBottom: `1px solid ${design.text}22` }}
+          style={{
+            backgroundColor: design.surface,
+            borderBottom: `1px solid ${design.text}22`,
+          }}
         >
           <a
             href="/album"
             target="_blank"
             rel="noopener noreferrer"
-            className="text-lg font-bold underline-offset-4 hover:underline"
+            className="text-[1.15em] font-bold underline-offset-4 hover:underline"
+            style={{ color: design.heading }}
           >
             家族のアルバム ↗
           </a>
           <span
-            className="rounded-full px-2 py-0.5 text-xs font-semibold"
+            className="rounded-full px-2 py-0.5 text-[0.72em] font-semibold"
             style={{ backgroundColor: design.accent, color: design.bg }}
           >
             NEW
           </span>
         </div>
         <div className="space-y-3 p-4">
-          <p className="text-sm leading-relaxed">
+          <p className="text-[1em] leading-relaxed">
             いちばん新しい思い出をここに。大きな文字と高いコントラストで、祖父にも見やすく。
           </p>
           <div className="grid grid-cols-3 gap-2">
@@ -167,15 +205,15 @@ function AlbumPreview({ design }: { design: DesignData }) {
               <AlbumPhoto key={i} src={src} />
             ))}
           </div>
-          <div className="flex items-center gap-4 pt-1">
+          <div className="flex flex-wrap items-center gap-4 pt-1">
             <span
-              className="rounded-lg px-4 py-2 text-sm font-semibold"
+              className="rounded-lg px-4 py-2 text-[0.95em] font-semibold"
               style={{ backgroundColor: design.button, color: design.buttonText }}
             >
               写真を追加
             </span>
             <span
-              className="text-sm font-medium underline"
+              className="text-[0.95em] font-medium underline"
               style={{ color: design.accent }}
             >
               すべて見る
