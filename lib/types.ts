@@ -11,7 +11,12 @@ export type StepId =
   | "step6"
   | "step7";
 
-export type VideoId = "intro" | "video1" | "video2" | "video3";
+export type VideoId =
+  | "intro"
+  | "grandfather_intro"
+  | "video1"
+  | "video2"
+  | "video3";
 
 export type WorkType = "sample" | "student";
 

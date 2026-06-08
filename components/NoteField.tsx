@@ -6,8 +6,17 @@ import { isSupabaseConfigured } from "@/lib/supabase/client";
 import { saveNote } from "@/lib/repo/notes";
 import { Button } from "@/components/ui/button";
 
-// 演習①の気づきメモ。接続時は notes へ保存、未接続時はセッション内のみ。
-export function NoteField() {
+// 記述メモ（notes へ保存）。STEP1の基発問・STEP3の気づきメモなどで使い回す。
+// 接続時は notes へ保存、未接続時はセッション内のみ。
+export function NoteField({
+  id = "note",
+  label = "気づきメモ",
+  placeholder = "シミュレータを体験して気づいたこと",
+}: {
+  id?: string;
+  label?: string;
+  placeholder?: string;
+} = {}) {
   const user = useCurrentUser();
   const [content, setContent] = useState("");
   const [saving, setSaving] = useState(false);
@@ -30,18 +39,18 @@ export function NoteField() {
 
   return (
     <div className="space-y-2">
-      <label htmlFor="note" className="text-sm font-medium">
-        気づきメモ
+      <label htmlFor={id} className="text-sm font-medium">
+        {label}
       </label>
       <textarea
-        id="note"
+        id={id}
         value={content}
         onChange={(e) => {
           setContent(e.target.value);
           setDone(false);
         }}
         rows={3}
-        placeholder="シミュレータを体験して気づいたこと"
+        placeholder={placeholder}
         className="w-full rounded-md border bg-background px-3 py-2 text-sm"
       />
       <div className="flex items-center gap-3">
@@ -51,7 +60,7 @@ export function NoteField() {
           onClick={handleSave}
           disabled={saving || !content.trim()}
         >
-          メモを保存
+          保存
         </Button>
         {done && (
           <span className="text-sm text-green-600">
