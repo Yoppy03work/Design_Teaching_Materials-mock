@@ -5,6 +5,8 @@ import type { DesignData } from "@/lib/types";
 import { ContrastChecker } from "@/components/ContrastChecker";
 import { Button } from "@/components/ui/button";
 import { Modal } from "@/components/Modal";
+import { ALBUM_PHOTOS } from "@/lib/albumPhotos";
+import { AlbumPhoto } from "@/components/AlbumPhoto";
 
 // プリセット（白紙からでなく改変から始められるように）。
 const PRESETS: { name: string; data: DesignData }[] = [
@@ -181,12 +183,8 @@ function AlbumPreview({
             いちばん新しい思い出をここに。大きな文字と高いコントラストで、祖父にも見やすく。
           </p>
           <div className="grid grid-cols-3 gap-2">
-            {Array.from({ length: 6 }).map((_, i) => (
-              <div
-                key={i}
-                className="aspect-square rounded-md"
-                style={{ backgroundColor: `${design.text}14` }}
-              />
+            {ALBUM_PHOTOS.map((src, i) => (
+              <AlbumPhoto key={i} src={src} />
             ))}
           </div>
           <div className="flex items-center gap-4 pt-1">

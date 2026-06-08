@@ -11,6 +11,8 @@ import {
 } from "@/lib/colorblind";
 import { cn } from "@/lib/utils";
 import { Modal } from "@/components/Modal";
+import { ALBUM_PHOTOS } from "@/lib/albumPhotos";
+import { AlbumPhoto } from "@/components/AlbumPhoto";
 
 // シーン色（赤緑の混同が見えるよう複数の有彩色を含める）
 const SCENE = {
@@ -198,7 +200,6 @@ function Swatch({ hex }: { hex: string }) {
 }
 
 function AlbumScene() {
-  const tiles = [SCENE.info, SCENE.done, SCENE.important, SCENE.warn, "#7B1FA2", "#00897B"];
   return (
     <div className="overflow-hidden rounded-xl border bg-white text-neutral-900 shadow-sm">
       <div className="flex items-center justify-between border-b px-4 py-3">
@@ -218,12 +219,8 @@ function AlbumScene() {
           <Tag color={SCENE.warn} label="注意" />
         </div>
         <div className="grid grid-cols-3 gap-2">
-          {tiles.map((c, i) => (
-            <div
-              key={`${c}-${i}`}
-              className="aspect-square rounded-md"
-              style={{ backgroundColor: c }}
-            />
+          {ALBUM_PHOTOS.map((src, i) => (
+            <AlbumPhoto key={i} src={src} />
           ))}
         </div>
         <button
