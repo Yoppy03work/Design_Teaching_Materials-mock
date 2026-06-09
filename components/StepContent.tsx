@@ -34,6 +34,9 @@ export function StepContent({ step }: { step: StepMeta }) {
               Googleドライブ ↗
             </span>
           </a>
+          <p className="text-xs text-muted-foreground">
+            授業で使う資料が入っています（「色覚シミュレータ Chrome拡張機能の使い方」のPDFなど）。拡張機能を使うと、色覚シミュレーションをふだん見るWebページにも重ねて試せます。
+          </p>
 
           {/* 1. イントロ動画（3分） */}
           <p className="text-sm">
