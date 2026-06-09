@@ -1,10 +1,14 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
+import { Geist_Mono, Noto_Sans_JP } from "next/font/google";
 import "./globals.css";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
+// アプリ全体の基本フォント（--font-sans を Noto Sans JP に）。
+// 日本語グリフは大きいため preload せず、display: swap で表示。
+const notoSansJp = Noto_Sans_JP({
+  variable: "--font-sans",
+  weight: ["400", "500", "700"],
+  preload: false,
+  display: "swap",
 });
 
 const geistMono = Geist_Mono({
@@ -24,12 +28,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="ja">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
-      </body>
+    <html lang="ja" className={`${notoSansJp.variable} ${geistMono.variable}`}>
+      <body className="antialiased">{children}</body>
     </html>
   );
 }
